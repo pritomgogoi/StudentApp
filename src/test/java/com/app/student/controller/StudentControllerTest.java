@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,6 +22,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -41,6 +43,8 @@ public class StudentControllerTest {
     private List<Student> fakeStudents;
 
     private Student testStudent;
+
+    private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
 
     @Before
@@ -102,6 +106,18 @@ public class StudentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testAddStudent() throws Exception {
+
+        final String studentJsonString = objectMapper.writeValueAsString(testStudent);
+
+        this.mockMvc.perform(post("/v1/students/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(studentJsonString))
+                .andExpect(status().isOk());
+
     }
 
 }
