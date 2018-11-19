@@ -44,9 +44,6 @@ public class StudentControllerTest {
 
     private Student testStudent;
 
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
